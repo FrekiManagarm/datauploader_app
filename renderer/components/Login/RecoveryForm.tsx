@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { recoverySchema } from '../../../lib/credentialsSchema';
+import { recoverySchema } from '../../lib/credentialsSchema';
 import { Button, Grid, TextField, Typography } from '@mui/material';
 import { NoteBox } from '../NoteBox/NoteBox';
 import { fontWeight } from '../../theme/theme';
@@ -10,6 +10,8 @@ import { routes } from '../../constants/routes';
 import MuiLink from '@mui/material/Link';
 import { css } from '@emotion/css';
 import styles from './styles';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 
 type RecoveryFormProps = {
   isModal?: boolean;
@@ -26,8 +28,8 @@ const RecoveryForm = ({ isModal = false, onBackToLoginModal }: RecoveryFormProps
     setError,
     getValues,
     formState: { errors }
-  } = useForm({
-    resolver: yupResolver(recoverySchema)
+  } = useForm<z.infer<typeof recoverySchema>>({
+    resolver: zodResolver(recoverySchema)
   })
 
   const submit = async (values: any) => {
@@ -75,7 +77,7 @@ const RecoveryForm = ({ isModal = false, onBackToLoginModal }: RecoveryFormProps
               Back to Log in
             </Button>
           ) : (
-            <Button component={Link} to={routes.login} disabled={loading} variant="outlined" color="primary" fullWidth>
+            <Button component={Link} href={routes.login} disabled={loading} variant="outlined" color="primary" fullWidth>
               Back to Log in
             </Button>
           )}
@@ -123,7 +125,7 @@ const RecoveryForm = ({ isModal = false, onBackToLoginModal }: RecoveryFormProps
               Back to Log in
             </Button>
           ) : (
-            <MuiLink component={Link} to={routes.login} variant="body1">
+            <MuiLink component={Link} href={routes.login} variant="body1">
               Back to Log in
             </MuiLink>
           )}

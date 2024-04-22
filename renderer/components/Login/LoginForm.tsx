@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import MuiLink from '@mui/material/Link';
-import { TextField, Typography, Grid, FormControlLabel, Button, IconButton, InputAdornment, Checkbox } from '@mui/material';
-import { loginSchema } from '../../../lib/credentialsSchema';
+import { TextField, Typography, Grid, Button, IconButton, InputAdornment } from '@mui/material';
+import { loginSchema } from '../../lib/credentialsSchema';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { css } from '@emotion/css';
 import styles from './styles';
 import Link from 'next/link';
-
 import { useAuth } from '../../contexts';
 import { routes } from '../../constants/routes';
 import { loginRequest, getUserInfo } from '../../services/auth.service';
+import { z } from 'zod';
 
 type LoginFormProps = {
   isModal?: boolean;
@@ -33,8 +33,8 @@ const LoginForm = ({ isModal = false, onRecoveryModal }: LoginFormProps) => {
     handleSubmit,
     setError,
     formState: { errors }
-  } = useForm({
-    resolver: yupResolver(loginSchema)
+  } = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema)
   });
 
   const submit = async (values: { email: string, password: string }) => {
@@ -84,9 +84,10 @@ const LoginForm = ({ isModal = false, onRecoveryModal }: LoginFormProps) => {
             label="Email"
             variant="outlined"
             error={Boolean(errors.email)}
-            helperText={errors.email?.message}
+            // helperText={errors.email?.message}
             {...register('email')}
           />
+          {errors.email ? <p>{errors.email.message}</p> : null}
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -96,7 +97,7 @@ const LoginForm = ({ isModal = false, onRecoveryModal }: LoginFormProps) => {
             type={isPasswordVisible ? 'text' : 'password'}
             variant="outlined"
             error={Boolean(errors.password)}
-            helperText={errors.password?.message}
+            // helperText={errors.password?.message}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -108,6 +109,7 @@ const LoginForm = ({ isModal = false, onRecoveryModal }: LoginFormProps) => {
             }}
             {...register('password')}
           />
+          {errors.password ? <p>{errors.password.message}</p> : null}
         </Grid>
         {/* {!isPasswordExpired && (
           <Grid sx={isModal ? { ml: 1.5 } : undefined} item xs={12}>
@@ -123,7 +125,7 @@ const LoginForm = ({ isModal = false, onRecoveryModal }: LoginFormProps) => {
             ) : (
               <Button
                 component={Link}
-                to={routes.passwordRecovery}
+                href={routes.passwordRecovery}
                 variant="contained"
                 color="primary"
                 fullWidth
@@ -142,14 +144,14 @@ const LoginForm = ({ isModal = false, onRecoveryModal }: LoginFormProps) => {
               Forgot your password?
             </Button>
           ) : (
-            <Button component={Link} to={routes.home} disabled={loading} variant="outlined" color="primary" fullWidth>
+            <Button component={Link} href={routes.home} disabled={loading} variant="outlined" color="primary" fullWidth>
               Continue without log in
             </Button>
           )}
         </Grid>
         {!isModal && !isPasswordExpired && (
           <Grid item xs={12} className={css(styles.link)}>
-            <MuiLink component={Link} to={routes.passwordRecovery} variant="body1">
+            <MuiLink component={Link} href={routes.passwordRecovery} variant="body1">
               Forgot your password?
             </MuiLink>
           </Grid>
