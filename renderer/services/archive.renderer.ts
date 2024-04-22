@@ -11,7 +11,7 @@ export const getArchives = () => {
     archivesGet = archives;
   });
 
-  ipcRenderer.on("archives-not-found", (event, archives) => {
+  ipcRenderer.on("archives-not-found", () => {
     archivesGet = null;
     error = "Archives not found";
   });
@@ -22,6 +22,4 @@ export const getArchives = () => {
   };
 };
 
-export const createArchive = () => {
-
-}
+export const createArchive = () => {};
