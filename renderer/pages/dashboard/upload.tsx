@@ -1,9 +1,8 @@
 import React from 'react'
+import { Upload } from '../../components'
 
 const DashboardUploadPage = () => {
-  return (
-    <div>DashboardUploadPage</div>
-  )
+  return <Upload />
 }
 
 export default DashboardUploadPage

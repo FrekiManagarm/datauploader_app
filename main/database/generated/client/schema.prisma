@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native","darwin","debian-openssl-1.1.x","linux-musl"]
+  output   = "../main/database/generated/client"
+}
+
+generator zod {
+  provider = "zod-prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:instance/du_db.db"
+}
+
+model WTGPart {
+  id String @id @default(cuid())
+  name String? @default("")
+  wtg String? @default("")
+  site String? @default("")
+  status String? @default("")
+}
+
+model WTGDoor {
+  id String @id @default(cuid())
+  wtg String? @default("")
+  site String? @default("")
+  door_path String? @default("")
+  status String? @default("")
+}
+
+model Archive {
+  id String @id @default(cuid())
+  part String? @default("")
+  wtg String? @default("")
+  site String? @default("")
+  path String? @default("")
+  status String? @default("")
+  size String? @default("")
+  uploaded String? @default("")
+  upload_time String? @default("")
+}
+
+model UploadItem {
+  id String @id @default(cuid())
+  path String? @default("")
+  size String? @default("")
+  status String? @default("")
+  uploaded String? @default("")
+  upload_time String? @default("")
+}
+
+model ScoresPaths {
+  id String @id @default(cuid())
+  wtg String? @default("")
+  site String? @default("")
+  path String? @default("")
+}

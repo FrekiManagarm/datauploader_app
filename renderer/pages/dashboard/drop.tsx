@@ -1,8 +1,11 @@
-import React from 'react'
+import { Drop } from '../../components'
+import DashboardLayout from '../../components/DashboardLayout/DashboardLayout'
 
 const DashboardDropPage = () => {
   return (
-    <div>DashboardDropPage</div>
+    <DashboardLayout>
+      <Drop />
+    </DashboardLayout>
   )
 }
 
